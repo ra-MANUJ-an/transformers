@@ -502,6 +502,7 @@ class Qwen2SdpaAttention(Qwen2Attention):
 
         bsz, q_len, _ = hidden_states.size()
 
+        print(505, query_states.device, key_states.device, value_states.device, hidden_states.device)
         query_states = self.q_proj(hidden_states)
         key_states = self.k_proj(hidden_states)
         value_states = self.v_proj(hidden_states)
