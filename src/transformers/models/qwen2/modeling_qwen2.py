@@ -78,6 +78,7 @@ class Qwen2RMSNorm(nn.Module):
         hidden_states = hidden_states.to(torch.float32)
         variance = hidden_states.pow(2).mean(-1, keepdim=True)
         hidden_states = hidden_states * torch.rsqrt(variance + self.variance_epsilon)
+        print(81, self.weight.device, hidden_states.device)
         return self.weight * hidden_states.to(input_dtype)
 
     def extra_repr(self):
@@ -160,7 +161,7 @@ class Qwen2RotaryEmbedding(nn.Module):
         device_type = x.device.type
         device_type = device_type if isinstance(device_type, str) and device_type != "mps" else "cpu"
         with torch.autocast(device_type=device_type, enabled=False):
-            print(inv_freq_expanded.device, position_ids_expanded.device)
+            print(164, inv_freq_expanded.device, position_ids_expanded.device)
             position_ids_expanded = position_ids_expanded.to(inv_freq_expanded.device)
             freqs = (inv_freq_expanded.float() @ position_ids_expanded.float()).transpose(1, 2)
             emb = torch.cat((freqs, freqs), dim=-1)
